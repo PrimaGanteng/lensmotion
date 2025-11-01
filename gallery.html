@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon.png" type="image/png">
+    <title>LM Gallery</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="gallery-page">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">Lens & Motion</a>
+            <div class="nav-links">
+                <a href="gallery.html" class="nav-link active">Gallery</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="gallery-header">
+                <h1 class="gallery-title">LM Gallery</h1>
+                <p class="gallery-subtitle">Koleksi karya fotografi dan videografi</p>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label class="filter-label">Kategori:</label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-category="all">Semua</button>
+                        <button class="filter-btn" data-category="cosplay">Cosplay</button>
+                        <button class="filter-btn" data-category="wedding">Wedding</button>
+                        <button class="filter-btn" data-category="portrait">Portrait</button>
+                        <button class="filter-btn" data-category="landscape">Landscape</button>
+                        <button class="filter-btn" data-category="event">Event</button>
+                        <button class="filter-btn" data-category="product">Product</button>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Urutkan:</label>
+                    <select class="filter-select" id="sortSelect">
+                        <option value="newest">Terbaru</option>
+                        <option value="oldest">Terlama</option>
+                        <option value="title">Judul (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Projects will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="footer">
+        <div class="container">
+            <p>&copy; 2025 Lens & Motion. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://instagram.com/tyeprima" class="social-link" target="_blank">Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Detail Modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content project-modal-content">
+            <button class="modal-close" onclick="closeProjectModal()" data-testid="close-project-modal">&times;</button>
+            
+            <div class="project-modal-body">
+                <!-- Image Slider -->
+                <div class="modal-slider-container">
+                    <button class="slider-btn slider-prev" onclick="changeModalSlide(-1)" data-testid="slider-prev-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <div class="modal-slider-wrapper" id="modalSliderWrapper">
+                        <!-- Images will be loaded here -->
+                    </div>
+                    <button class="slider-btn slider-next" onclick="changeModalSlide(1)" data-testid="slider-next-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                    <div class="slider-indicators" id="modalSliderIndicators"></div>
+                </div>
+
+                <!-- Project Info -->
+                <div class="project-modal-info">
+                    <h2 class="project-modal-title" id="modalProjectTitle" data-testid="modal-project-title">Loading...</h2>
+                    <div class="project-modal-meta">
+                        <span class="detail-category" id="modalProjectCategory" data-testid="modal-category"></span>
+                        <span class="detail-date" id="modalProjectDate" data-testid="modal-date"></span>
+                    </div>
+                    <p class="project-modal-description" id="modalProjectDescription" data-testid="modal-description">Loading...</p>
+                    
+                    <button class="download-button" onclick="showPasswordModal()" data-testid="download-button">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Download Full Quality
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-content password-modal-content">
+            <div class="modal-header">
+                <h2>🔒 Password Required</h2>
+                <button class="modal-close" onclick="closePasswordModal()" data-testid="close-password-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Masukkan password untuk mengakses file full quality project <strong id="passwordProjectTitle"></strong>:</p>
+                <input 
+                    type="password" 
+                    id="passwordInput" 
+                    class="password-input" 
+                    placeholder="Masukkan password" 
+                    autocomplete="off"
+                    data-testid="password-input">
+                <p class="password-hint">💡 Hubungi admin untuk mendapatkan password akses</p>
+                <div class="modal-actions">
+                    <button class="btn-cancel" onclick="closePasswordModal()" data-testid="cancel-btn">Batal</button>
+                    <button class="btn-submit" onclick="verifyPassword()" data-testid="submit-password-btn">Verifikasi</button>
+                </div>
+                <p id="passwordError" class="password-error" data-testid="password-error"></p>
+                <p id="passwordSuccess" class="password-success" data-testid="password-success"></p>
+                
+                <!-- Drive Link Container (Hidden by default) -->
+                <div id="driveLinkContainer" class="drive-link-container" style="display: none;">
+                    <p class="drive-link-text">✅ Password benar! Klik tombol di bawah untuk membuka Google Drive:</p>
+                    <a id="driveLinkButton" href="#" target="_blank" class="drive-link-button">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        Buka Google Drive
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notificationToast" class="notification-toast">
+        <span id="notificationMessage"></span>
+    </div>
+
+    <script src="./data.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>
